@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# location of the jena downloads page
+DOWNLOADS_PAGE_URL="https://archive.apache.org/dist/jena/binaries/"
+
+curl --silent --location "${DOWNLOADS_PAGE_URL}" |
+  grep -oE '>apache-jena-[0-9.]+tar.gz</a>' |
+  sed 's|>apache-jena-||' |
+  sed 's|.tar.gz</a>||' |
+  uniq |
+  tr '\n' ' '

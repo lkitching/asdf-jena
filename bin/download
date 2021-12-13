@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ "${ASDF_INSTALL_TYPE}" != "version" ]; then
+  echo 'Only versioned installs are currently supported' 1>&2
+  exit 1
+fi
+
+# expected download URL for the specified version
+DOWNLOAD_URL="https://archive.apache.org/dist/jena/binaries/apache-jena-${ASDF_INSTALL_VERSION}.tar.gz"
+
+# download to temp file
+DOWNLOAD_ARCHIVE=$(mktemp -t 'asdf-jena')
+curl --silent --location -o "${DOWNLOAD_ARCHIVE}" "${DOWNLOAD_URL}"
+
+# extract downloaded file to download directory
+tar --strip-components 1 -C "${ASDF_DOWNLOAD_PATH}" -xzf "${DOWNLOAD_ARCHIVE}"
